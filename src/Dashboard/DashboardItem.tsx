@@ -2,11 +2,11 @@ import { useState } from 'react';
 import type { Character } from '../API/interfaces';
 import styles from './DashboardItem.module.css';
 import ModalItem from './ModalItem';
-export interface CharacterItem {
+export interface CardProps {
   item: Character;
 }
 
-export default function CharacterItem({ item }: CharacterItem) {
+export default function Card({ item }: CardProps) {
   const [openModal, setOpenModal] = useState(false);
   const {
     image,

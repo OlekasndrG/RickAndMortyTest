@@ -1,113 +1,60 @@
 import { useEffect, useState } from 'react';
-import { getAllCharacters } from '../API/Services';
+import { filterCharacters, getAllCharacters } from '../API/Services';
 import { useQuery } from '@tanstack/react-query';
 import CharacterItem from './DashboardItem';
 import styles from './DashboardItem.module.css';
 import { Character } from '../API/interfaces';
+import { MultiSelect } from '../components/Filter';
+import { Pagination } from '../components/Pagination';
+import Card from './DashboardItem';
 
 export default function Dashboard() {
-  const [page, setPage] = useState(40);
-  const [dataToRender, setDataToRender] = useState<Character[]>([]);
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState('');
+
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ['characters', page],
-    queryFn: () => getAllCharacters(page),
+    queryKey: ['characters', page, filter],
+    queryFn: () => filterCharacters(page, filter),
+
     staleTime: 10 * 1000,
   });
-  console.log(data?.characters);
-  useEffect(() => {
-    getAllCharacters(1)
-      .then(res => setDataToRender(res.characters))
-      .then(console.log);
-  }, []);
 
-  const onLoadMore = () => {
-    setPage(prev => prev + 1);
-    if (data) {
-      setDataToRender(prev => [...prev, ...data?.characters]);
-    }
+  const onSetFilterValue = (filterValue: string) => {
+    setFilter(filterValue);
+    setPage(1);
   };
-  //   const renderedList = dataToRender.length ? dataToRender : data;
-
-  //   if (isFetching || isPending) return <span>Data is loading...</span>;
-
+  console.log(data?.results);
   if (error) return 'An error has occurred: ' + error.message;
 
   return (
-    <div className={styles.pageContainer}>
-      <ul className={styles.dashBoardContainer}>
-        {dataToRender?.map(item => {
-          return (
-            <li key={item.id}>
-              <CharacterItem item={item} />
-            </li>
-          );
-        })}
-      </ul>
-      {data?.end && (
-        <button
-          type="button"
-          onClick={onLoadMore}
-          className={styles.loadMoreButton}
-          disabled={isFetching || isPending}
-        >
-          load more
-        </button>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-12 flex flex-wrap items-start">
+      {/* Sidebar */}
+      <div className="w-full sm:w-1/4 pr-4 mb-8 sm:mb-0">
+        <MultiSelect FilterValue={onSetFilterValue} />
+      </div>
+      <div>
+        <Pagination
+          info={data?.info}
+          pageNumber={page}
+          updatePageNumber={setPage}
+        />
+      </div>
+
+      {isFetching || isPending ? (
+        <>fetching</>
+      ) : (
+        <ul className={styles.dashBoardContainer}>
+          {data?.results?.map(item => {
+            return (
+              <li key={item.id}>
+                <Card item={item} />
+              </li>
+            );
+          })}
+        </ul>
       )}
 
       {error && <p>An error has occurred: {error.message}</p>}
     </div>
   );
 }
-
-// import React, { useState, useEffect } from 'react';
-// import { useQuery } from '@tanstack/react-query';
-// import { getAllCharacters } from '../API'; // Import your API function
-
-// export default function Dashboard() {
-//   const [page, setPage] = useState(1);
-//   const [newData, setNewData] = useState([]);
-//   const [renderedData, setRenderedData] = useState([]);
-
-//   const { isPending, error, data, isFetching } = useQuery({
-//     queryKey: ['characters', page],
-//     queryFn: () => getAllCharacters(page),
-//   });
-
-//   useEffect(() => {
-//     if (data) {
-//       // Update only the newData state when new data arrives
-//       setNewData(data);
-//     }
-//   }, [data]);
-
-//   useEffect(() => {
-//     if (newData.length > 0) {
-//       // Concatenate new data with existing renderedData
-//       setRenderedData(prevData => [...prevData, ...newData]);
-//       // Clear the newData state after appending it to renderedData
-//     }
-//   }, [newData]);
-
-//   const onLoadMore = () => {
-//     setPage(prevPage => prevPage + 1);
-//   };
-
-//   if (isFetching || isPending) return <span>Data is loading...</span>;
-
-//   if (error) return <div>An error has occurred: {error.message}</div>;
-
-//   return (
-//     <>
-//       <ul style={{ display: 'flex', flexDirection: 'column' }}>
-//         {renderedData.map(item => (
-//           <li key={item.id}>
-//             <Character item={item} />
-//           </li>
-//         ))}
-//       </ul>
-//       <button type="button" onClick={onLoadMore}>
-//         Load more
-//       </button>
-//     </>
-//   );
-// }

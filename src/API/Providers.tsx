@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function Providers({ children }: React.PropsWithChildren) {
   const client = useMemo(() => new QueryClient(), []);
-  //   const client = new QueryClient();
+
   return (
     <QueryClientProvider client={client}>
       {children}
