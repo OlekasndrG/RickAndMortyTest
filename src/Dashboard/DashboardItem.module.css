@@ -4,6 +4,13 @@
   margin-top: 120px;
   margin-inline: auto;
 }
+.mainContainer {
+  display: flex;
+  & form {
+    min-width: 300px;
+    max-width: 300px;
+  }
+}
 .dashBoardContainer {
   display: flex;
   flex-direction: row;

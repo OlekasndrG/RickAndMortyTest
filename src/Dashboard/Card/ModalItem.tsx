@@ -1,6 +1,6 @@
-import { Character } from '../API/interfaces';
-import styles from './DashboardItem.module.css';
-import { Modal } from '../Utils/Modal/Modal';
+import { Character } from '../../API/interfaces';
+
+import { Modal } from '../../Utils/Modal/Modal';
 import clsx from 'clsx';
 export interface ModalItemProps {
   item: Character;
@@ -12,10 +12,10 @@ export default function ModalItem({ closeModal, item }: ModalItemProps) {
 
   return (
     <Modal onClose={closeModal}>
-      <div className={`${styles.container} ${styles.modalContainer}`}>
+      <div className="flex flex-col items-center text-l bg-blue-200 gap-3  font-bold p-6 ">
         <h3>{name}</h3>
         <img src={image} alt={name} width={300} height={420} />
-        <p>location {location.name}</p>
+        <p>location : {location.name}</p>
         <div
           className={clsx(
             'inline-flex items-center py-1 px-3.5 rounded-3xl text-sm font-medium',
@@ -28,10 +28,10 @@ export default function ModalItem({ closeModal, item }: ModalItemProps) {
           status : {status}
         </div>
 
-        <p> type: {type}</p>
-        <p>origin :{origin.name}</p>
-        <p>gender :{gender}</p>
-        <p>species : {species}</p>
+        <p>Type: {type}</p>
+        <p>Origin:{origin.name}</p>
+        <p>Gender: {gender}</p>
+        <p>Species: {species}</p>
       </div>
     </Modal>
   );

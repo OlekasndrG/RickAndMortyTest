@@ -1,7 +1,4 @@
-// import { nanoid } from 'nanoid';
 import React, { useEffect, FC, MouseEvent } from 'react';
-
-import styles from './Modal.module.css';
 
 import { createPortal } from 'react-dom';
 const ModalRoot = document.getElementById('modal-root') as HTMLElement;
@@ -26,16 +23,20 @@ export const Modal: FC<DefaultModalType> = ({ onClose, children }) => {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    // window.addEventListener('click', handleDocumentClick);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      // window.removeEventListener('click', handleDocumentClick);
     };
   }, [onClose]);
 
   return createPortal(
-    <div onClick={handleBackdropCLick} className={styles.Overlay}>
-      <div className={styles.InnerContainer}>{children}</div>
+    <div
+      onClick={handleBackdropCLick}
+      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 z-10 flex justify-center items-center"
+    >
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white">
+        {children}
+      </div>
     </div>,
     ModalRoot
   );
