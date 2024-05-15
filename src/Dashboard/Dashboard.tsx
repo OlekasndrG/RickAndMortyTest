@@ -31,19 +31,19 @@ export default function Dashboard() {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.mainContainer}>
+    <div className="max-w-screen-2xl mx-auto mt-10 mb-10 p-8">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-0">
         <MultiSelect
           FilterValue={onSetFilterValue}
           sort={setMainArray}
           mainArray={mainArray}
         />
         {isFetching || isPending ? (
-          <div className="mx-auto mt-4 border-gray-300 h-40 w-40 animate-spin rounded-full border-8 border-t-blue-600" />
+          <div className="mx-auto mt-6 border-gray-300 h-40 w-40 animate-spin rounded-full border-8 border-t-blue-600" />
         ) : (
           <div>
             {isSuccess && (
-              <ul className={styles.dashBoardContainer}>
+              <ul className="flex flex-row items-center justify-center flex-wrap gap-4 ">
                 {mainArray.map(item => {
                   return (
                     <li key={item.id}>

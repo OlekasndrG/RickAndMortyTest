@@ -114,7 +114,7 @@ export const MultiSelect = ({
   };
   return (
     <form
-      className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md w-full max-w-sm"
+      className="flex flex-col  gap-4 bg-white p-6 rounded-lg shadow-md min-w-72"
       onSubmit={onSearchButtonClick}
     >
       <label
